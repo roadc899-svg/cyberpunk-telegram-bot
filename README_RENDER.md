@@ -3,7 +3,7 @@
 ## 1️⃣ Add BOT_TOKEN in Render
 Environment Variable:
 - KEY: BOT_TOKEN
-- VALUE: <your-telegram-token>
+- VALUE: <8081568672:AAGTlo2bQuMzZVCqRygHWLGpErWYjJD9HKw>
 
 ## 2️⃣ Deploy Commands
 Build Command:
