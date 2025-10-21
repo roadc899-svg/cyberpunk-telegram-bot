@@ -11,7 +11,7 @@ DELAY_SECONDS = 0.8
 # ================================
 # 🔰 Тема загрузки
 # ================================
- "QUANTUM_UPLINK": [
+ QUANTUM_UPLINK = [
         "[QUANTUM LINK INITIALIZATION] ⚛️ (0%)",
         "Calibrating quantum nodes... (8%)",
         "Synchronizing tachyon relays... (17%)",
@@ -30,7 +30,7 @@ DELAY_SECONDS = 0.8
 # ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("Initializing protocol...")
-    for step in CYBER_STEPS:
+    for step in QUANTUM_UPLINK:
         await asyncio.sleep(DELAY_SECONDS)
         try:
             await msg.edit_text(step)
