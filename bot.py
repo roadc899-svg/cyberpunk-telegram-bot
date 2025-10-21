@@ -4,9 +4,9 @@ import random
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-# Получаем токен из Render Environment
+# 🔹 Получаем токен из переменных окружения (Render → Environment → BOT_TOKEN)
 TOKEN = os.getenv("BOT_TOKEN")
-DELAY_SECONDS = 1.2
+DELAY_SECONDS = 0.8
 
 # ================================
 # 🔰 Темы загрузки
@@ -97,7 +97,6 @@ BOOT_THEMES = {
         "Step 10/10: MISSION ONLINE ✅"
     ],
 
-    # ⚡️ Новая тема с процентами
     "QUANTUM_UPLINK": [
         "[QUANTUM LINK INITIALIZATION] ⚛️ (0%)",
         "Calibrating quantum nodes... (8%)",
@@ -113,20 +112,23 @@ BOOT_THEMES = {
     ]
 }
 
-
 # ================================
-# 🔰 /start команда
+# 🔰 Команда /start
 # ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = await update.message.reply_text("Initializing protocol...")
-    for step in CYBER_STEPS:
+    user = update.effective_user
+    theme_name, steps = random.choice(list(BOOT_THEMES.items()))
+    print(f"🚀 {user.first_name} (@{user.username}) запустил тему: {theme_name}")
+
+    msg = await update.message.reply_text(f"🧩 Loading theme: {theme_name}...")
+    for step in steps:
         await asyncio.sleep(DELAY_SECONDS)
         try:
             await msg.edit_text(step)
         except Exception as e:
             print(f"⚠️ Edit error: {e}")
             continue
-    await msg.reply_text("✅ Installation complete. System ready.")
+    await msg.reply_text(f"✅ Boot completed ({theme_name} Mode).")
 
 
 # ================================
