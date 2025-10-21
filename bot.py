@@ -35,11 +35,8 @@ async def install_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     msg = await query.message.reply_text("Initializing protocol...")
     for step in CYBER_STEPS:
-        try:
-            await asyncio.sleep(DELAY_SECONDS)
-            await msg.edit_text(step)
-        except Exception:
-            continue
+        await asyncio.sleep(DELAY_SECONDS)
+        await msg.edit_text(step)
 
 if __name__ == "__main__":
     app = Application.builder().token(TOKEN).build()
