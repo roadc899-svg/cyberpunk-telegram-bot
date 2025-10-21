@@ -1,7 +1,7 @@
 import asyncio
 import os
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 TOKEN = os.getenv("BOT_TOKEN")
 
@@ -22,28 +22,25 @@ CYBER_STEPS = [
 
 DELAY_SECONDS = 1.2
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("⚡ INITIATE INSTALLATION ⚡", callback_data="install_cyber")]]
-    )
-    await update.message.reply_text(
-        "[WELCOME TO NEON SYSTEM]\nSelect protocol:", reply_markup=keyboard
-    )
 
-async def install_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    msg = await query.message.reply_text("Initializing protocol...")
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = await update.message.reply_text("Initializing protocol...")
     for step in CYBER_STEPS:
         await asyncio.sleep(DELAY_SECONDS)
-        await msg.edit_text(step)
+        try:
+            await msg.edit_text(step)
+        except Exception as e:
+            print(f"⚠️ Edit error: {e}")
+            continue
+    await msg.reply_text("✅ Installation complete. System ready.")
+
 
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(install_callback, pattern="^install_cyber$"))
     print("✅ Bot started and listening...")
     app.run_polling()
+
 
 if __name__ == "__main__":
     main()
