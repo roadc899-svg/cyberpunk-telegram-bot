@@ -3,7 +3,7 @@ import os
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = os.getenv("8081568672:AAGTlo2bQuMzZVCqRygHWLGpErWYjJD9HKw")
+TOKEN = os.getenv("BOT_TOKEN")
 
 CYBER_STEPS = [
     "[BOOT SEQUENCE INITIATED] ░▒▓█",
