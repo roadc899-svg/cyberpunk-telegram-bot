@@ -1,12 +1,16 @@
 import asyncio
 import os
-import threading
-from flask import Flask
+import random
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+# Получаем токен из Render Environment
 TOKEN = os.getenv("BOT_TOKEN")
+DELAY_SECONDS = 1.2
 
+# ================================
+# 🔰 Тема загрузки
+# ================================
 CYBER_STEPS = [
     "[BOOT SEQUENCE INITIATED] █▒▒▒▒▒▒▒▒▒",
     "Step 1/10: Scanning neural grids... █▒▒▒▒▒▒▒▒",
@@ -22,9 +26,9 @@ CYBER_STEPS = [
     "✅ SYSTEM ONLINE — ACCESS GRANTED"
 ]
 
-DELAY_SECONDS = 1.2
-
-
+# ================================
+# 🔰 /start команда
+# ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("Initializing protocol...")
     for step in CYBER_STEPS:
@@ -37,11 +41,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await msg.reply_text("✅ Installation complete. System ready.")
 
 
+# ================================
+# 🔰 Запуск приложения
+# ================================
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     print("✅ Bot started and listening...")
-    app.run_polling()
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
