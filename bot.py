@@ -11,19 +11,18 @@ DELAY_SECONDS = 0.8
 # ================================
 # 🔰 Тема загрузки
 # ================================
-CYBER_STEPS = [
-    "[BOOT SEQUENCE INITIATED] █▒▒▒▒▒▒▒▒▒",
-    "Step 1/10: Scanning neural grids... █▒▒▒▒▒▒▒▒",
-    "Step 2/10: Decrypting cortex shard... ██▒▒▒▒▒▒▒",
-    "Step 3/10: Injecting synth-protocols... ███▒▒▒▒▒▒",
-    "Step 4/10: Overclocking cyber-threads... ████▒▒▒▒",
-    "Step 5/10: Patching memory splinters... █████▒▒▒",
-    "Step 6/10: Syncing black-ops node... ██████▒▒",
-    "Step 7/10: Calibrating holo-interface... ███████▒",
-    "Step 8/10: Seeding phantom drivers... ████████",
-    "Step 9/10: Finalizing spectral handshake... ████████▒",
-    "Step 10/10: Stabilizing matrix core... █████████",
-    "✅ SYSTEM ONLINE — ACCESS GRANTED"
+ "QUANTUM_UPLINK": [
+        "[QUANTUM LINK INITIALIZATION] ⚛️ (0%)",
+        "Calibrating quantum nodes... (8%)",
+        "Synchronizing tachyon relays... (17%)",
+        "Decrypting dimensional keys... (29%)",
+        "Stabilizing wormhole network... (41%)",
+        "Uploading entangled memory cores... (53%)",
+        "Reconstructing spacetime lattice... (67%)",
+        "Balancing energy flux... (79%)",
+        "Activating Q-Core Intelligence... (88%)",
+        "Finalizing uplink sequence... (96%)",
+        "✅ UPLINK STABLE — 100% COMPLETED"
 ]
 
 # ================================
