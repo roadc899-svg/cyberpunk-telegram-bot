@@ -44,23 +44,5 @@ def main():
     app.run_polling()
 
 
-# -----------------------------
-# ✅ Flask-заглушка для Render
-# -----------------------------
-def keep_alive():
-    app = Flask('')
-
-    @app.route('/')
-    def home():
-        return "Bot is running"
-
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
-
-# Запускаем Flask в отдельном потоке
-threading.Thread(target=keep_alive).start()
-# -----------------------------
-
-
 if __name__ == "__main__":
     main()
