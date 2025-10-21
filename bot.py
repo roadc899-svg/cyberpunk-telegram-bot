@@ -8,44 +8,43 @@ TOKEN = os.getenv("BOT_TOKEN")
 DELAY_SECONDS = 0.8
 
 # ================================
-# 🔰 Тема загрузки QUANTUM_UPLINK
+# 🔰 Шаги загрузки (исп.) с процентами
 # ================================
-QUANTUM_UPLINK = [
-    "[QUANTUM LINK INITIALIZATION] ⚛️ (0%)",
-    "Calibrating quantum nodes... (8%)",
-    "Synchronizing tachyon relays... (17%)",
-    "Decrypting dimensional keys... (29%)",
-    "Stabilizing wormhole network... (41%)",
-    "Uploading entangled memory cores... (53%)",
-    "Reconstructing spacetime lattice... (67%)",
-    "Balancing energy flux... (79%)",
-    "Activating Q-Core Intelligence... (88%)",
-    "Finalizing uplink sequence... (96%)",
-    "✅ UPLINK STABLE — 100% COMPLETED"
+LOADING_STEPS = [
+    ("Conexión al sistema...", 0),
+    ("Verificación de registro...", 12),
+    ("Verificación de depósito...", 25),
+    ("Análisis del historial de apuestas...", 40),
+    ("Conexión de la cuenta a Lucky Mines...", 55),
+    ("Recolección de datos del algoritmo de ubicación de minas...", 70),
+    ("Creación de la primera señal...", 88),
+    ("✅ Acceso al hackbot concedido.", 100),
 ]
 
 # ================================
 # 🔰 Команда /start
 # ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = await update.message.reply_text("⚙️ Initializing Quantum Uplink...")
-    for step in QUANTUM_UPLINK:
+    msg = await update.message.reply_text("⚙️ Iniciando proceso...")
+    for text, pct in LOADING_STEPS:
         await asyncio.sleep(DELAY_SECONDS)
         try:
-            await msg.edit_text(step)
+            # Для финального шага не добавляем "(100%)" дважды, но можно оставить — здесь показываем проценты у всех
+            await msg.edit_text(f"{text} ({pct}%)")
         except Exception as e:
             print(f"⚠️ Edit error: {e}")
             continue
-    await msg.reply_text("✅ Quantum Uplink stabilized. System ready.")
+
+    await msg.reply_text("✅ Proceso completado. Acceso concedido al hackbot.")
 
 
 # ================================
-# 🔰 Запуск приложения
+# 🔰 Точка входа
 # ================================
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    print("✅ Bot started and listening (QUANTUM_UPLINK mode)...")
+    print("✅ Bot started and listening (Spanish progress mode)...")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
