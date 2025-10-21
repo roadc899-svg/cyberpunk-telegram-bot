@@ -8,7 +8,7 @@ TOKEN = os.getenv("BOT_TOKEN")
 DELAY_SECONDS = 0.8
 
 # ================================
-# 🔰 Шаги загрузки (исп.) с процентами
+# 🔰 Шаги загрузки с процентами
 # ================================
 LOADING_STEPS = [
     ("Conexión al sistema...", 0),
@@ -22,21 +22,36 @@ LOADING_STEPS = [
 ]
 
 # ================================
+# 🔰 Функция создания прогресс-бара
+# ================================
+def make_progress_bar(percent: int, length: int = 20) -> str:
+    filled = int(length * percent / 100)
+    empty = length - filled
+    return f"[{'█' * filled}{'▒' * empty}] {percent}%"
+
+# ================================
 # 🔰 Команда /start
 # ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await update.message.reply_text("⚙️ Iniciando proceso...")
-    for text, pct in LOADING_STEPS:
+    # Проходим все шаги кроме последнего
+    for text, pct in LOADING_STEPS[:-1]:
         await asyncio.sleep(DELAY_SECONDS)
+        bar = make_progress_bar(pct)
         try:
-            # Для финального шага не добавляем "(100%)" дважды, но можно оставить — здесь показываем проценты у всех
-            await msg.edit_text(f"{text} ({pct}%)")
+            await msg.edit_text(f"{text}\n{bar}")
         except Exception as e:
             print(f"⚠️ Edit error: {e}")
             continue
 
-    await msg.reply_text("✅ Proceso completado. Acceso concedido al hackbot.")
-
+    # Последний шаг (финальный вывод без второго сообщения)
+    final_text, final_pct = LOADING_STEPS[-1]
+    await asyncio.sleep(DELAY_SECONDS)
+    final_bar = make_progress_bar(final_pct)
+    try:
+        await msg.edit_text(f"{final_text}\n{final_bar}")
+    except Exception as e:
+        print(f"⚠️ Edit error (final): {e}")
 
 # ================================
 # 🔰 Точка входа
@@ -44,7 +59,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    print("✅ Bot started and listening (Spanish progress mode)...")
+    print("✅ Bot started and listening (ASCII progress mode)...")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
