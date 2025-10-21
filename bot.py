@@ -1,11 +1,10 @@
 import asyncio
 import os
 import random
-import threading
-from flask import Flask
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+# 🔹 Получаем токен из переменных окружения (Render → Environment → BOT_TOKEN)
 TOKEN = os.getenv("BOT_TOKEN")
 DELAY_SECONDS = 1.2
 
@@ -114,8 +113,9 @@ BOOT_THEMES = {
     ]
 }
 
+
 # ================================
-# 🔰 Основной код
+# 🔰 Команда /start
 # ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     theme_name, steps = random.choice(list(BOOT_THEMES.items()))
@@ -129,26 +129,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             continue
     await msg.reply_text(f"✅ Boot completed ({theme_name} Mode).")
 
+
+# ================================
+# 🔰 Точка входа
+# ================================
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     print("✅ Bot started and listening...")
     app.run_polling()
 
-# -----------------------------
-# ✅ Flask-заглушка для Render
-# -----------------------------
-def keep_alive():
-    app = Flask('')
-
-    @app.route('/')
-    def home():
-        return "Bot is running"
-
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
-
-threading.Thread(target=keep_alive).start()
 
 if __name__ == "__main__":
     main()
