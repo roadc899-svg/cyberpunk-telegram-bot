@@ -3,12 +3,14 @@ import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-# Получаем токен из Render Environment
+# ================================
+# 🔰 Токен из Render Environment
+# ================================
 TOKEN = os.getenv("BOT_TOKEN")
 DELAY_SECONDS = 1.0
 
 # ================================
-# 🔰 Шаги загрузки с процентами
+# 🔰 Шаги загрузки
 # ================================
 LOADING_STEPS = [
     ("Conexión al sistema...", 0),
@@ -22,7 +24,7 @@ LOADING_STEPS = [
 ]
 
 # ================================
-# 🔰 Функция создания прогресс-бара
+# 🔰 Генератор прогресс-бара
 # ================================
 def make_progress_bar(percent: int, length: int = 20) -> str:
     filled = int(length * percent / 100)
@@ -30,11 +32,12 @@ def make_progress_bar(percent: int, length: int = 20) -> str:
     return f"[{'█' * filled}{'▒' * empty}] {percent}%"
 
 # ================================
-# 🔰 Команда /start
+# 🔰 Асинхронная установка (в отдельной задаче)
 # ================================
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def run_installation(update: Update):
+    """Эмулирует процесс загрузки в отдельном потоке"""
     msg = await update.message.reply_text("⚙️ Iniciando proceso...")
-    # Проходим все шаги кроме последнего
+
     for text, pct in LOADING_STEPS[:-1]:
         await asyncio.sleep(DELAY_SECONDS)
         bar = make_progress_bar(pct)
@@ -44,7 +47,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             print(f"⚠️ Edit error: {e}")
             continue
 
-    # Последний шаг (показываем текст без прогресс-бара)
+    # Финальный шаг
     final_text, _ = LOADING_STEPS[-1]
     await asyncio.sleep(DELAY_SECONDS)
     try:
@@ -53,12 +56,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print(f"⚠️ Edit error (final): {e}")
 
 # ================================
+# 🔰 Команда /start
+# ================================
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Создаёт отдельную задачу для каждого пользователя"""
+    asyncio.create_task(run_installation(update))
+
+# ================================
 # 🔰 Точка входа
 # ================================
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    print("✅ Bot started and listening (ASCII progress mode)...")
+    print("✅ Bot started and listening (parallel progress mode)...")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == "__main__":
