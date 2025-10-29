@@ -1,15 +1,12 @@
-Cyberpunk Telegram Bot Deployment Guide
-1️⃣ Add BOT_TOKEN in Render
-Environment Variable:
+# HackBot Webhook
 
-KEY: BOT_TOKEN
-VALUE: <8081568672:AAGTlo2bQuMzZVCqRygHWLGpErWYjJD9HKw>
-2️⃣ Deploy Commands
-Build Command:
+Этот репозиторий хранит webhook для Chatterfy / Render — возвращает динамические сообщения (сканирование, прогресс) для игр: Chicken Road, Lucky Mines, Aviator, Penalty ShotOut.
 
-pip install -r requirements.txt
-Start Command:
-
-python bot.py
-✅ Done
-Your bot will run 24/7 on Render.
+## Как это работает
+- `bot.py` — Flask-сервер с маршрутом `/webhook`.
+- Chatterfy отправляет POST-запрос с телом:
+  ```json
+  {
+    "user": {"name": "Ivan"},
+    "game": "mines"
+  }
